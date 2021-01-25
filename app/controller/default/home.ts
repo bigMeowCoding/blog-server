@@ -1,8 +1,8 @@
 "use strict";
 
-import { MenuType } from "../../../../libs/interface";
-import {  makeMenuTree } from "../../../../libs/utils";
-import { HttpStatus } from "../../../../libs/interface/http";
+import { MenuType } from "@/libs/interface";
+import { makeMenuTree } from "@/libs/utils";
+import { HttpStatus } from "@/libs/interface/http";
 
 const Controller = require("egg").Controller;
 

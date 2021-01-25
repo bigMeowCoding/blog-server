@@ -2,7 +2,7 @@
 
 import { Controller } from "egg";
 import { createPlaceHolderImage } from "./createPlaceHolderImage";
-import { ArticleImage } from "../../../../admin/src/interface/article";
+import { ArticleImage } from "interface/article";
 
 class MainController extends Controller {
   async index() {

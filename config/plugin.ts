@@ -6,6 +6,7 @@
 //   enable: true,
 // }
 // };
+import 'tsconfig-paths/register';
 
 export const mysql = {
     enable: true,

@@ -4,6 +4,10 @@
     "target": "es2017",
     "module": "commonjs",
     "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"]
+    },
     "noImplicitAny": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -22,6 +26,5 @@
     "inlineSourceMap": true,
     "importHelpers": true
   },
-  "extends": "../tsconfig.base.json",
   "exclude": ["app/public", "app/web", "app/views"]
 }
