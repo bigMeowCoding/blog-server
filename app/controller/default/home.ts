@@ -3,43 +3,21 @@
 import { MenuType } from "@/libs/interface";
 import { makeMenuTree } from "@/libs/utils";
 import { HttpStatus } from "@/libs/interface/http";
+import { Article } from "@/interface/article";
 
 const Controller = require("egg").Controller;
 
 class HomeController extends Controller {
   async getArticleList() {
-    let sql =
-      "SELECT article.id as id," +
-      "article.title as title," +
-      "article.introduce as introduce," +
-      "FROM_UNIXTIME(article.addTime,'%Y-%m-%d %H:%i:%s' ) as addTime," +
-      "article.view_count as view_count ," +
-      "type.typeName as typeName " +
-      "FROM article LEFT JOIN type ON article.type_id = type.Id";
-
-    const results = await this.app.mysql.query(sql);
+    const results = await this.app.mysql.select("article");
     this.ctx.body = {
       data: results,
     };
   }
 
   async getArticleById() {
-    //先配置路由的动态传值，然后再接收值
     let id = this.ctx.params.id;
-    let sql =
-      "SELECT article.id as id," +
-      "article.title as title," +
-      "article.introduce as introduce," +
-      "article.article_content as article_content," +
-      "FROM_UNIXTIME(article.addTime,'%Y-%m-%d %H:%i:%s' ) as addTime," +
-      "article.view_count as view_count ," +
-      "type.typeName as typeName ," +
-      "type.id as typeId " +
-      "FROM article LEFT JOIN type ON article.type_id = type.Id " +
-      "WHERE article.id=" +
-      id;
-    const result = await this.app.mysql.query(sql);
-
+    const result = await this.app.mysql.get("article", { id });
     this.ctx.body = { data: result };
   }
 
@@ -51,20 +29,33 @@ class HomeController extends Controller {
       data: menuList,
     };
   }
-
+  async getTypeInfoById() {
+    let id = this.ctx.params.id;
+    if (id) {
+      id = parseInt(id);
+    }
+    let menuList: MenuType[] = await this.app.mysql.select("type");
+    this.ctx.body = {
+      code: HttpStatus.ok,
+      data:
+        id != null
+          ? menuList.find((menu) => {
+              return menu.id === id;
+            })
+          : null,
+    };
+  }
   async getListById() {
     let id = this.ctx.params.id;
-    let sql =
-      "SELECT article.id as id," +
-      "article.title as title," +
-      "article.introduce as introduce," +
-      "FROM_UNIXTIME(article.addTime,'%Y-%m-%d %H:%i:%s' ) as addTime," +
-      "article.view_count as view_count ," +
-      "type.typeName as typeName " +
-      "FROM article LEFT JOIN type ON article.type_id = type.Id " +
-      "WHERE type_id=" +
-      id;
-    const result = await this.app.mysql.query(sql);
+    if (id) {
+      id = parseInt(id);
+    }
+    let result = await this.app.mysql.select("article");
+    if (Array.isArray(result)) {
+      result = result.filter((article: Article) => {
+        return article.type_id === id;
+      });
+    }
     this.ctx.body = { data: result };
   }
 }

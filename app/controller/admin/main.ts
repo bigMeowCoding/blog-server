@@ -197,7 +197,7 @@ class MainController extends Controller {
       id;
     // @ts-ignore
     const result = await this.app.mysql.query(sql);
-    this.ctx.body = { data: result };
+    this.ctx.body = { data: result[0] };
   }
 }
 
