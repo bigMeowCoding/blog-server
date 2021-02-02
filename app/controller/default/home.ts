@@ -16,7 +16,10 @@ class HomeController extends Controller {
   }
 
   async getArticleById() {
-    let id = this.ctx.params.id;
+    const params: {
+      id: string;
+    } = this.ctx.params;
+    let { id } = params;
     const result = await this.app.mysql.get("article", { id });
     this.ctx.body = { data: result };
   }
@@ -30,17 +33,17 @@ class HomeController extends Controller {
     };
   }
   async getTypeInfoById() {
-    let id = this.ctx.params.id;
-    if (id) {
-      id = parseInt(id);
-    }
+    const params: {
+      id: string;
+    } = this.ctx.params;
+    let { id } = params;
     let menuList: MenuType[] = await this.app.mysql.select("type");
     this.ctx.body = {
       code: HttpStatus.ok,
       data:
         id != null
           ? menuList.find((menu) => {
-              return menu.id === id;
+              return menu.id === parseInt(id);
             })
           : null,
     };
