@@ -57,8 +57,10 @@ export default (appInfo: EggAppInfo) => {
     sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`,
   };
   config.keys = appInfo.name + "_1586172996609_2814";
-  return {
+  const result: PowerPartial<EggAppConfig> & { sourceUrl: string } = {
     ...config,
     ...bizConfig,
   };
+
+  return result;
 };

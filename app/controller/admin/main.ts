@@ -1,8 +1,8 @@
 "use strict";
 
-import { Controller } from "egg";
 import { createPlaceHolderImage } from "./createPlaceHolderImage";
 import { ArticleImage } from "interface/article";
+const Controller = require("egg").Controller;
 
 class MainController extends Controller {
   async index() {
@@ -79,10 +79,9 @@ class MainController extends Controller {
     // @ts-ignore
     const images = await this.getArticleImagesByArticleId(articleId);
     for (const image of images) {
-      // @ts-ignore
       await this.app.mysql
         .delete("article_image", { id: image.id })
-        .catch((e) => {
+        .catch((e: Error) => {
           this.ctx.body = {
             data: e,
           };
